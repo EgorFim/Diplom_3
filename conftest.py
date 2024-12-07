@@ -8,15 +8,14 @@ from data import test_url,BASE_URL,STATIC_DATA,DRIVER_NAME
 import requests
 
 @pytest.fixture
-def user_2():
+def user():
     response = requests.post(f'{BASE_URL}auth/register', json=STATIC_DATA)
     yield response
     r = response.json()['accessToken']
     requests.delete(f'{BASE_URL}auth/user', headers={'authorization':f'{r}'})
 
 
-
-@pytest.fixture(params=["chrome","firefox"])
+@pytest.fixture(params=["chrome", "firefox"])
 def driver(request):
     if request.param == 'chrome':
         DRIVER_NAME = 'chrome'
@@ -25,26 +24,11 @@ def driver(request):
         DRIVER_NAME = 'firefox'
         driver = webdriver.Firefox()
 
-    driver.get(test_url)
-    WebDriverWait(driver, 20).until(expected_conditions.visibility_of_element_located(MainPageLocators.ZAGRUZKA_GLAVNOI))
-    yield driver
-    driver.quit()
-
-
 
 @pytest.fixture
-def driver_2():
-    driver = webdriver.Chrome()
+def driver_get(driver):
     driver.get(test_url)
-    yield driver
-    driver.quit()
+    WebDriverWait(driver, 5).until(expected_conditions.visibility_of_element_located(MainPageLocators.ZAGRUZKA_GLAVNOI))
+    return driver
 
 
-@pytest.fixture
-def driver_3():
-    driver = webdriver.Firefox()
-    driver.get(test_url)
-    WebDriverWait(driver, 5).until(
-        expected_conditions.invisibility_of_element(MainPageLocators.OVERLAY))
-    yield driver
-    driver.quit()

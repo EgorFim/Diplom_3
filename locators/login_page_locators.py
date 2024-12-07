@@ -53,3 +53,5 @@ class LoginPageLocators:
     # окно информации о заказе в личном кабинете
     ORDER_NUMBER_IN_ACCOUNT = By.XPATH, '//p[@class="text text_type_digits-default"]'
     # номер заказа в лич кабинете
+    KNOPKA_LICHNYI_KABINET_ENTER = By.XPATH, './/*[text()="Личный Кабинет"]'
+    # кнопка "Личный кабинет" на главной
